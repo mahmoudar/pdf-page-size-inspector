@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PDF Page Size Inspector</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="container">
+    <h1>PDF Page Size Inspector</h1>
+    <p class="subtitle">
+      Upload a PDF to detect page sizes in px, mm, cm and standard paper formats.
+    </p>
+
+    <input type="file" id="pdfInput" accept="application/pdf" />
+
+    <div id="summary" class="summary hidden"></div>
+
+    <table id="resultTable" class="hidden">
+      <thead>
+        <tr>
+          <th>Page</th>
+          <th>Pixels (px)</th>
+          <th>Millimeters (mm)</th>
+          <th>Centimeters (cm)</th>
+          <th>Paper Size</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="pdf.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
