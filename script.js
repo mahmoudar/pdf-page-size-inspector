@@ -1,4 +1,3 @@
-// DOM Elements
 const pdfInput = document.getElementById("pdfInput");
 const dropZone = document.getElementById("dropZone");
 const table = document.getElementById("resultTable");
@@ -15,11 +14,10 @@ const exportCSVBtn = document.getElementById("exportCSV");
 const exportJSONBtn = document.getElementById("exportJSON");
 const copyResultsBtn = document.getElementById("copyResults");
 
-// Configure PDF.js worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = "pdf.worker.min.js";
 
-// Paper sizes database (in mm)
-const PAPER_SIZES = [
+const PAGE_SIZES = [
+  // ISO 216 (A series)
   { name: "A0", w: 841, h: 1189 },
   { name: "A1", w: 594, h: 841 },
   { name: "A2", w: 420, h: 594 },
@@ -27,16 +25,58 @@ const PAPER_SIZES = [
   { name: "A4", w: 210, h: 297 },
   { name: "A5", w: 148, h: 210 },
   { name: "A6", w: 105, h: 148 },
+  { name: "A7", w: 74, h: 105 },
+  { name: "A8", w: 52, h: 74 },
+
+  // ISO 216 (B series – books, posters)
+  { name: "B0", w: 1000, h: 1414 },
+  { name: "B1", w: 707, h: 1000 },
+  { name: "B2", w: 500, h: 707 },
+  { name: "B3", w: 353, h: 500 },
+  { name: "B4", w: 250, h: 353 },
+  { name: "B5", w: 176, h: 250 },
+  { name: "B6", w: 125, h: 176 },
+
+  // ISO 269 (C series – envelopes)
+  { name: "C4", w: 229, h: 324 },
+  { name: "C5", w: 162, h: 229 },
+  { name: "C6", w: 114, h: 162 },
+
+  // US sizes
   { name: "Letter", w: 216, h: 279 },
   { name: "Legal", w: 216, h: 356 },
-  { name: "Tabloid", w: 279, h: 432 }
+  { name: "Tabloid", w: 279, h: 432 },
+  { name: "Executive", w: 184, h: 267 },
+
+  // ANSI sizes
+  { name: "ANSI A", w: 216, h: 279 },
+  { name: "ANSI B", w: 279, h: 432 },
+  { name: "ANSI C", w: 432, h: 559 },
+  { name: "ANSI D", w: 559, h: 864 },
+  { name: "ANSI E", w: 864, h: 1118 },
+
+  // Common book / publishing trims
+  { name: "Mass Market Paperback", w: 107, h: 174 },
+  { name: "Digest", w: 140, h: 216 },
+  { name: "Trade Paperback", w: 152, h: 229 },
+  { name: "US Trade", w: 152, h: 229 },
+  { name: "Royal", w: 156, h: 234 },
+  { name: "Crown Quarto", w: 189, h: 246 },
+  { name: "Demy Octavo", w: 138, h: 216 },
+
+  // Comic / manga
+  { name: "Comic Book", w: 170, h: 260 },
+  { name: "Manga (Tankōbon)", w: 128, h: 182 },
+
+  // Photo sizes (common in PDFs)
+  { name: "4x6 Photo", w: 102, h: 152 },
+  { name: "5x7 Photo", w: 127, h: 178 },
+  { name: "8x10 Photo", w: 203, h: 254 }
 ];
 
-// Store results globally for export
 let analysisResults = [];
 let currentFileName = "";
 
-// Utility functions
 function ptToMm(pt) {
   return (pt * 25.4) / 72;
 }
@@ -59,7 +99,6 @@ function getOrientation(width, height) {
 }
 
 function calculateAspectRatio(width, height) {
-  // Iterative GCD to avoid stack overflow with large numbers
   const gcd = (a, b) => {
     while (b !== 0) {
       [a, b] = [b, a % b];
@@ -85,7 +124,6 @@ function matchPaper(mmW, mmH) {
   return "Custom";
 }
 
-// Drag and drop handlers
 dropZone.addEventListener("dragover", (e) => {
   e.preventDefault();
   dropZone.classList.add("drag-over");
@@ -109,7 +147,6 @@ dropZone.addEventListener("click", () => {
   pdfInput.click();
 });
 
-// File input handler
 pdfInput.addEventListener("change", (e) => {
   const file = e.target.files[0];
   if (file) {
@@ -117,28 +154,23 @@ pdfInput.addEventListener("change", (e) => {
   }
 });
 
-// Main file processing function
 async function handleFileUpload(file) {
-  // Reset UI
   tbody.innerHTML = "";
   analysisResults = [];
   currentFileName = file.name;
   
-  // Hide previous results
   summary.className = "summary hidden";
   table.classList.add("hidden");
   fileInfo.classList.add("hidden");
   statistics.classList.add("hidden");
   actions.classList.add("hidden");
   
-  // Show loading
   loadingSpinner.classList.remove("hidden");
 
   try {
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
 
-    // Display file info
     fileName.textContent = file.name;
     fileSize.textContent = formatFileSize(file.size);
     totalPages.textContent = pdf.numPages;
@@ -147,7 +179,6 @@ async function handleFileUpload(file) {
     const sizes = [];
     const paperTypes = [];
 
-    // Process each page
     for (let i = 1; i <= pdf.numPages; i++) {
       const page = await pdf.getPage(i);
       const viewport = page.getViewport({ scale: 1 });
@@ -169,7 +200,6 @@ async function handleFileUpload(file) {
       sizes.push(`${Math.round(widthMm)}x${Math.round(heightMm)}`);
       paperTypes.push(paper);
 
-      // Store result
       const result = {
         page: i,
         widthPx: Math.round(widthPt),
@@ -188,7 +218,6 @@ async function handleFileUpload(file) {
       };
       analysisResults.push(result);
 
-      // Create table row
       const row = document.createElement("tr");
       row.innerHTML = `
         <td>${i}</td>
@@ -204,12 +233,10 @@ async function handleFileUpload(file) {
       tbody.appendChild(row);
     }
 
-    // Hide loading, show results
     loadingSpinner.classList.add("hidden");
     table.classList.remove("hidden");
     actions.classList.remove("hidden");
 
-    // Display summary
     const allSame = sizes.every(s => s === sizes[0]);
     summary.classList.remove("hidden");
     summary.classList.add(allSame ? "same" : "diff");
@@ -217,7 +244,6 @@ async function handleFileUpload(file) {
       ? `<strong>✓</strong> All pages have the same dimensions.`
       : `<strong>⚠</strong> This PDF contains pages with different sizes.`;
 
-    // Display statistics
     displayStatistics(analysisResults, paperTypes);
     
   } catch (error) {
@@ -227,9 +253,7 @@ async function handleFileUpload(file) {
   }
 }
 
-// Display statistics
 function displayStatistics(results, paperTypes) {
-  // Calculate statistics
   const widthsMm = results.map(r => parseFloat(r.widthMm));
   const heightsMm = results.map(r => parseFloat(r.heightMm));
   
@@ -238,7 +262,6 @@ function displayStatistics(results, paperTypes) {
   const minHeight = Math.min(...heightsMm).toFixed(1);
   const maxHeight = Math.max(...heightsMm).toFixed(1);
 
-  // Most common paper size
   const paperCount = {};
   paperTypes.forEach(type => {
     paperCount[type] = (paperCount[type] || 0) + 1;
@@ -249,7 +272,6 @@ function displayStatistics(results, paperTypes) {
       )
     : 'None';
 
-  // Count orientations
   const orientations = results.map(r => r.orientation);
   const portraitCount = orientations.filter(o => o === "Portrait").length;
   const landscapeCount = orientations.filter(o => o === "Landscape").length;
@@ -285,7 +307,6 @@ function displayStatistics(results, paperTypes) {
   statistics.classList.remove("hidden");
 }
 
-// Export to CSV
 exportCSVBtn.addEventListener("click", () => {
   if (analysisResults.length === 0) return;
 
@@ -318,7 +339,6 @@ exportCSVBtn.addEventListener("click", () => {
   downloadFile(csvContent, currentFileName.replace(".pdf", "_analysis.csv"), "text/csv");
 });
 
-// Export to JSON
 exportJSONBtn.addEventListener("click", () => {
   if (analysisResults.length === 0) return;
 
@@ -332,7 +352,6 @@ exportJSONBtn.addEventListener("click", () => {
   downloadFile(jsonContent, currentFileName.replace(".pdf", "_analysis.json"), "application/json");
 });
 
-// Copy results to clipboard
 copyResultsBtn.addEventListener("click", async () => {
   if (analysisResults.length === 0) return;
 
@@ -357,7 +376,6 @@ copyResultsBtn.addEventListener("click", async () => {
   }
 });
 
-// Download file helper
 function downloadFile(content, filename, mimeType) {
   const blob = new Blob([content], { type: mimeType });
   const url = URL.createObjectURL(blob);
