@@ -1,4 +1,3 @@
-/* Reset and Base Styles */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -35,7 +34,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   min-height: 100vh;
-  padding: 20px;
   color: var(--text-primary);
 }
 
@@ -43,12 +41,10 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   background: var(--bg-primary);
-  border-radius: var(--radius-xl);
   box-shadow: var(--shadow-xl);
   overflow: hidden;
 }
 
-/* Header */
 .header {
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
   color: white;
@@ -79,7 +75,6 @@ body {
   margin: 0 auto;
 }
 
-/* Upload Section */
 .upload-section {
   padding: 30px;
 }
@@ -136,7 +131,6 @@ body {
   display: none;
 }
 
-/* Loading Spinner */
 .loading {
   text-align: center;
   padding: 40px 30px;
@@ -161,7 +155,6 @@ body {
   font-size: 1rem;
 }
 
-/* File Info */
 .file-info {
   padding: 0 30px 20px;
 }
@@ -205,7 +198,6 @@ body {
   flex-shrink: 0;
 }
 
-/* Summary */
 .summary {
   padding: 16px 30px;
   margin: 0 30px 20px;
@@ -229,7 +221,6 @@ body {
   border-left: 4px solid var(--warning-color);
 }
 
-/* Statistics */
 .statistics {
   padding: 0 30px 20px;
 }
@@ -267,7 +258,6 @@ body {
   font-weight: 700;
 }
 
-/* Actions */
 .actions {
   padding: 0 30px 20px;
   display: flex;
@@ -317,7 +307,6 @@ body {
   background: var(--bg-tertiary);
 }
 
-/* Table */
 .table-container {
   padding: 0 30px 30px;
   overflow-x: auto;
@@ -367,7 +356,6 @@ tbody tr:last-child td {
   border-bottom: none;
 }
 
-/* Footer */
 .footer {
   background: var(--bg-secondary);
   padding: 24px 30px;
